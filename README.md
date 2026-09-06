@@ -5,6 +5,10 @@ core slice only: location + timezone lookup, read-only. (Admin edits,
 free hosting, and the "current local time" feature are later additions
 -- see the project roadmap.)
 
+For the full endpoint reference -- parameters, example responses, error
+codes -- see **[API_REFERENCE.md](API_REFERENCE.md)**. Everything below
+is what you need to get it running and start using it yourself.
+
 ## Test it right now -- no API key needed
 
 A small bundled sample (`data/schools_sample_raw.json`, 10 real
@@ -125,30 +129,10 @@ lookups. (On the real dataset, that first call would return the
 school's actual IPEDS UnitID -- e.g. `110635` for Berkeley -- instead of
 a `sample-##` placeholder.)
 
-## Automated tests
+## Good to know
 
-Manually pasting URLs proves the happy path works; it doesn't cover case
-sensitivity, empty results, bad input, or pagination edges. Those are
-now a real test suite instead:
-
-```bash
-python -m pip install -r requirements-dev.txt
-python -m pytest
-```
-
-`tests/conftest.py` rebuilds `data/schools.json` from the bundled sample
-before the run, so tests are reproducible regardless of what you were
-poking at manually beforehand. Run this after any change, especially
-once you start on the search-matching improvements or the real dataset.
-
-## Deliberately not in this version
-
-- **No admin write endpoints** (add/edit/delete a school). That's a
-  separate, security-sensitive piece -- see the project roadmap for why
-  it's kept apart and reviewed separately before it touches any real
-  credential.
-- **No "current local time" feature yet** -- just the timezone name for
-  now, current time comes next once this core is confirmed working.
-- **No free-hosting deployment** (CDN, edge function, GitHub Actions).
-  Everything above runs on your own machine; where it eventually lives
-  is a separate decision that doesn't block testing the functionality.
+- This gives you a timezone *name* (like `America/Denver`), not the
+  current time in it -- turning that into an actual clock reading is
+  on your end.
+- It's read-only for now -- there's no way to add, edit, or remove a
+  school through the API yet.
